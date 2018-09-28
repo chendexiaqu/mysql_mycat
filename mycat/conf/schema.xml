@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE mycat:schema SYSTEM "schema.dtd">
+<mycat:schema xmlns:mycat="http://io.mycat/">
+
+    <schema name="mall" checkSQLschema="false" sqlMaxLimit="100" dataNode="dn1">
+        <table name="test" primaryKey="id" dataNode="dn1,dn2" rule="mod-long"></table>
+    </schema>
+
+    <dataNode name="dn1" dataHost="dh1" database="mall">
+
+    </dataNode>
+
+    <dataNode name="dn2" dataHost="dh2" database="hello">
+
+    </dataNode>
+
+    <dataHost name="dh1" maxCon="1000" minCon="10" balance="1"
+              writeType="0" dbType="mysql" dbDriver="native" switchType="-1" slaveThreshold="100">
+        <heartbeat>select user()</heartbeat>
+        <writeHost host="m1" url="172.18.0.2:3306" user="root" password="password">
+            <readHost host="s1" url="172.18.0.3:3306" user="root" password="password" />
+            <readHost host="s2" url="172.18.0.4:3306" user="root" password="password" />
+        </writeHost>
+
+    </dataHost>
+
+    <dataHost name="dh2" maxCon="1000" minCon="10" balance="1"
+              writeType="0" dbType="mysql" dbDriver="native" switchType="-1" slaveThreshold="100">
+        <heartbeat>select user()</heartbeat>
+        <writeHost host="m2" url="172.18.0.5:3306" user="root" password="password">
+            <readHost host="s3" url="172.18.0.6:3306" user="root" password="password" />
+            <readHost host="s4" url="172.18.0.7:3306" user="root" password="password" />
+        </writeHost>
+
+    </dataHost>
+
+</mycat:schema>
